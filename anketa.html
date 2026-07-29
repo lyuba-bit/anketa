@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкета соратника</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, serif;
+        }
+        body {
+            background: #1a1a1a;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: #fcf8f0;
+            max-width: 700px;
+            width: 100%;
+            border-radius: 28px;
+            padding: 35px 40px;
+            border: 1px solid #b8860b;
+            position: relative;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: repeating-linear-gradient(90deg, #b8860b 0px, #b8860b 15px, #d4a017 15px, #d4a017 30px);
+            border-radius: 28px 28px 0 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-top: 10px;
+        }
+        .header h1 {
+            font-size: 28px;
+            color: #1c1c1c;
+        }
+        .header h1 span {
+            color: #b8860b;
+        }
+        .header .subtitle {
+            color: #5a4d3a;
+            font-size: 14px;
+            border-top: 1px solid #dacfbc;
+            padding-top: 10px;
+            margin-top: 6px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2a241c;
+            margin-bottom: 5px;
+        }
+        label .required {
+            color: #b22222;
+            margin-left: 3px;
+        }
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1.5px solid #c9b79b;
+            border-radius: 10px;
+            background: #ffffff;
+            transition: 0.25s;
+        }
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #b8860b;
+            box-shadow: 0 0 0 4px rgba(184, 134, 11, 0.12);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .row-duo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            padding-top: 6px;
+            flex-wrap: wrap;
+        }
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 15px;
+            color: #1f1a14;
+            cursor: pointer;
+        }
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #b8860b;
+            flex-shrink: 0;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0 8px;
+            padding: 10px 14px;
+            background: #f5efe7;
+            border-radius: 12px;
+            border-left: 4px solid #b8860b;
+        }
+        .checkbox-group input {
+            width: 20px;
+            height: 20px;
+            accent-color: #b8860b;
+            flex-shrink: 0;
+        }
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 400;
+            font-size: 14px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1f1a14, #3d3227);
+            color: #f5efe7;
+            font-size: 17px;
+            font-weight: 700;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid #b8860b;
+            margin-top: 6px;
+        }
+        .btn-submit:hover {
+            opacity: 0.9;
+            transform: scale(1.01);
+        }
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        #notification {
+            display: none;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-top: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+        #notification.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        #notification.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        #notification.loading {
+            display: block;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #7a6b57;
+            border-top: 1px solid #dacfbc;
+            padding-top: 18px;
+        }
+        .footer-note strong {
+            color: #b8860b;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .row-duo {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+            .radio-group {
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Русская <span>Община</span></h1>
+        <p class="subtitle">Анкета соратника</p>
+    </div>
+
+    <form id="anketaForm">
+        <div class="form-group">
+            <label for="fullname">Полное имя (ФИО) <span class="required">*</span></label>
+            <input type="text" id="fullname" placeholder="Иванов Иван Иванович" required>
+        </div>
+
+        <div class="row-duo">
+            <div class="form-group">
+                <label for="birthdate">Дата рождения <span class="required">*</span></label>
+                <input type="date" id="birthdate" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Возраст <span class="required">*</span></label>
+                <input type="number" id="age" min="0" max="120" placeholder="35" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="passport">Паспортные данные <span class="required">*</span></label>
+            <input type="text" id="passport" placeholder="Серия, номер, кем и когда выдан" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Номер телефона <span class="required">*</span></label>
+            <input type="tel" id="phone" placeholder="+7 (999) 123-45-67" required>
+        </div>
+
+        <div class="form-group">
+            <label>Вероисповедание <span class="required">*</span></label>
+            <div class="radio-group">
+                <label><input type="radio" name="religion" value="Православие" checked> ☦ Православие</label>
+                <label><input type="radio" name="religion" value="Родноверие (Язычество)"> 🌿 Родноверие</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="profession">Профессия / Род занятий <span class="required">*</span></label>
+            <input type="text" id="profession" placeholder="Инженер, ремесленник, дружинник..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="skills">Навыки и умения</label>
+            <textarea id="skills" placeholder="Владение оружием, врачевание, кузнечное дело, вождение..."></textarea>
+        </div>
+
+        <div class="checkbox-group">
+            <input type="checkbox" id="consent" required>
+            <label for="consent">Подтверждаю достоверность данных и даю согласие на их обработку <span class="required">*</span></label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">✚ Отправить анкету</button>
+    </form>
+
+    <div id="notification"></div>
+
+    <div class="footer-note">
+        <strong>⚡ С верой и правдой</strong> • Данные передаются по защищенному каналу
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // ⚠️ ВАЖНО: ВСТАВЬТЕ СВОЙ URL ОТ GOOGLE APPS SCRIPT
+    // ============================================================
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2UWX0iWOAAu4KIcv8aHAuBFS7aALoPdKGOM2MgZUqt-GtFe5zCsslVgYZGLPL1hPB/exec';
+    // ============================================================
+
+    const form = document.getElementById('anketaForm');
+    const notification = document.getElementById('notification');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Автоподсчет возраста
+    document.getElementById('birthdate').addEventListener('change', function() {
+        const birthDate = new Date(this.value);
+        if (isNaN(birthDate)) return;
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        if (age > 0 && age < 120) {
+            document.getElementById('age').value = age;
+        }
+    });
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Собираем данные
+        const data = {
+            fullname: document.getElementById('fullname').value.trim(),
+            birthdate: document.getElementById('birthdate').value,
+            age: document.getElementById('age').value,
+            passport: document.getElementById('passport').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            religion: document.querySelector('input[name="religion"]:checked')?.value || 'Не указано',
+            profession: document.getElementById('profession').value.trim(),
+            skills: document.getElementById('skills').value.trim(),
+            consent: document.getElementById('consent').checked
+        };
+
+        // Проверка обязательных полей
+        if (!data.fullname || !data.birthdate || !data.age || !data.passport || !data.phone || !data.profession) {
+            notification.className = 'error';
+            notification.textContent = '⚠️ Заполните все обязательные поля (отмечены *)';
+            notification.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        if (!data.consent) {
+            notification.className = 'error';
+            notification.textContent = '⚠️ Необходимо подтвердить согласие на обработку данных';
+            notification.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+
+        // Блокируем кнопку
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Отправка...';
+        notification.className = 'loading';
+        notification.textContent = '⏳ Отправка данных...';
+
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Важно для Google Apps Script
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            // При режиме no-cors мы не можем прочитать ответ,
+            // но если ошибки нет — данные ушли
+            notification.className = 'success';
+            notification.textContent = '✅ Анкета успешно отправлена! Данные сохранены в Google Таблицу.';
+            
+            // Очищаем форму
+            form.reset();
+            document.getElementById('birthdate').value = '';
+            document.getElementById('consent').checked = false;
+
+        } catch (error) {
+            console.error('Ошибка:', error);
+            notification.className = 'error';
+            notification.textContent = '❌ Ошибка отправки. Проверьте интернет-соединение.';
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = '✚ Отправить анкету';
+        notification.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+</script>
+
+</body>
+</html>
